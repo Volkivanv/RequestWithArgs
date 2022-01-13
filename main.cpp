@@ -2,6 +2,7 @@
 #include <cpr/cpr.h>
 #include <vector>
 
+
 std::string requestMaking(std::vector<std::pair<std::string,std::string>> &inReq){
     std::string buf = "?";
     for(int i = 0; i < inReq.size();i++){
@@ -38,42 +39,22 @@ int main() {
             std::cout << r.text << std::endl;
         }else if(arg == "post"){
 
-            std::vector<cpr::Pair*> initReq;
-            initReq.resize(req.size());
+           std::vector<cpr::Pair> initReq;
 
 
-          for(int i = 0; i < initReq.size(); i++){
-                initReq[i] = new cpr::Pair(req[i].first.c_str(),req[i].second.c_str());
+
+
+          for(int i = 0; i < req.size(); i++){
+              cpr::Pair somePair =  cpr::Pair(req[i].first.c_str(), req[i].second.c_str());
+              initReq.push_back(somePair);
             }
 
 
 
-
-
-            cpr::Response r;
-            for(int i = 0; i < initReq.size(); i++) {
-                r = cpr::Post(cpr::Url("http://httpbin.org/post"),
-                              cpr::Payload({{initReq[i]->key, initReq[i]->value}}));
-                std::cout << r.text << std::endl;
-            }
-
-            /*
-
-            auto it1 = initReq.begin() ;
-            auto it2 = initReq.end();
 
             cpr::Response r = cpr::Post(cpr::Url("http://httpbin.org/post"),
-                          cpr::Payload(it1,it2));
+                          cpr::Payload(initReq.begin(),initReq.end()));
             std::cout << r.text << std::endl;
-
-             */
-
-            /*
-            cpr::Response r = cpr::Post(cpr::Url("http://httpbin.org/post"+ requestMaking(req)));
-
-
-            std::cout << r.text << std::endl;
-             */
 
 
 
